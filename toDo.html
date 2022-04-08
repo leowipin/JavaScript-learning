@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    <input type="text" id="textBox">
+    <button onclick="addToDo()">add to do</button>
+    <script>
+
+        let todos = ['go to the gym', 'study C', 'study python']
+        todos.push('go to play soccer');
+        todos.forEach(function (todoTitle) {
+            let element = document.createElement('div');
+            element.innerText = todoTitle;
+            document.body.appendChild(element);
+        });
+
+        function addToDo() {
+            let textBox = document.getElementById('textBox');
+            let title = textBox.value;
+            todos.push(title);
+        }
+
+    </script>
+</body>
+
+</html>

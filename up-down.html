@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            let count = 0;
+            function up(){
+                count = count +1;
+                document.getElementById("counter").innerText =count;
+            }
+            function down(){
+                count = count -1;
+                document.getElementById("counter").innerText =count;
+            }
+        </script>
+    </head>
+    <body>
+        <div id="counter">0</div>
+        <button onclick="up()">up</button>
+        <button onclick="down()">down</button>
+    </body>
+</html>
