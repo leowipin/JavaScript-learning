@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>fruit stand</title>
+    <style>
+        .container {
+            margin-bottom: 10px;
+        }
+
+        .amount-div {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" id="fruit" class="textbox" placeholder="type (banana, apple, orange)">
+        <div class="amount-div" id="amount1">0</div>
+        <button id="+1" onclick="up(this.id)">+</button>
+        <button id="-1" onclick="down(this.id)">-</button>
+    </div>
+    <div class="container">
+        <input type="text" id="fruit" class="textbox" placeholder="type (banana, apple, orange)">
+        <div class="amount-div" id="amount2">0</div>
+        <button id="+2" onclick="up(this.id)">+</button>
+        <button id="-2" onclick="down(this.id)">-</button>
+    </div>
+    <div class="container">
+        <input type="text" id="fruit" class="textbox" placeholder="type (banana, apple, orange)">
+        <div class="amount-div" id="amount3">0</div>
+        <button id="+3" onclick="up(this.id)">+</button>
+        <button id="-3" onclick="down(this.id)">-</button>
+    </div>
+    <div id="receipt">
+
+    </div>
+    <script>
+        const arrayFruit = [{ name: "banana", price: "$0.10" }, { name: "apple", price: "$0.50" },
+        { name: "orange", price: "$0.20" }];
+        function up() {
+            //how we know what element calls this function?
+        }
+        function down(clicked_id) {
+            document.getElementById("receipt").innerText = clicked_id;
+        }
+    </script>
+
+</body>
+
+</html>

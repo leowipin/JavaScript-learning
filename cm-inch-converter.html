@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>cm-inch converter</title>
+    <style>
+        .tbox {
+            box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 1);
+            border-width: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>CONVERTER</div>
+    <input type="text" id="numb" class="tbox" placeholder="insert number">
+    <button class="btn-inch" id="inch" onclick="toInches()">to inches</button>
+    <button class="btn-cm" id="cm" onclick="toCm()">to centimeter</button>
+    <div class="resultado-container" id="resultado">Resultado: </div>
+    <script>
+        function toCm() {
+            let number = document.getElementById("numb");
+            let value = number.value;
+            let result = +(value)*2.54;
+            let resultado = document.getElementById("resultado");
+            resultado.innerText = result;
+        }
+
+        function toInches() {
+            let number = document.getElementById("numb");
+            let value = number.value;
+            let result = +(value)/2.54;
+            let resultado = document.getElementById("resultado");
+            resultado.innerText = result;
+        }
+    </script>
+
+</body>
+
+</html>

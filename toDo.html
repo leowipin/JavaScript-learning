@@ -8,21 +8,41 @@
 <body>
 
     <input type="text" id="textBox">
+    <input type="date" id="date-picker">
     <button onclick="addToDo()">add to do</button>
+    <div id="todo-list"></div>
     <script>
 
-        let todos = ['go to the gym', 'study C', 'study python']
-        todos.push('go to play soccer');
-        todos.forEach(function (todoTitle) {
-            let element = document.createElement('div');
-            element.innerText = todoTitle;
-            document.body.appendChild(element);
-        });
+        let todos = [
+            {title: "go to the gym",
+            dueDate: "2022-04-16" }, 
+            {title: "study JS",
+            dueDate: "2022-04-17"}, 
+            {title: "study python",
+            dueDate: "2022-04-15"}];
+
+        loadingToDo();
+        function loadingToDo() {
+            document.getElementById("todo-list").innerHTML='';
+
+            todos.forEach(function (todo) {
+                let element = document.createElement('div');
+                element.innerText = todo.title + " " + todo.dueDate;
+                let todoList = document.getElementById("todo-list");
+                todoList.appendChild(element);
+            });
+        }
+
 
         function addToDo() {
             let textBox = document.getElementById('textBox');
             let title = textBox.value;
-            todos.push(title);
+            let datePicker = document.getElementById("date-picker");
+            let dueDate = datePicker.value;
+
+            todos.push({title: title,
+                        dueDate: dueDate});
+            loadingToDo();
         }
 
     </script>
