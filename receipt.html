@@ -22,30 +22,59 @@
 <body>
     <header>WELCOME TO MY FRUIT STAND!</header>
     <div class="container">
-        <input type="text" id="fruit" class="textbox" placeholder="type only (banana, apple, orange)">
+        <input type="text" id="fruit1" class="textbox" placeholder="type only (banana, apple, orange)">
         <div class="amount-div" id="amount1">0</div>
         <button id="+1" onclick="up(this.id)">+</button>
         <button id="-1" onclick="down(this.id)">-</button>
     </div>
     <div class="container">
-        <input type="text" id="fruit" class="textbox" placeholder="type only (banana, apple, orange)">
+        <input type="text" id="fruit2" class="textbox" placeholder="type only (banana, apple, orange)">
         <div class="amount-div" id="amount2">0</div>
         <button id="+2" onclick="up(this.id)">+</button>
         <button id="-2" onclick="down(this.id)">-</button>
     </div>
     <div class="container">
-        <input type="text" id="fruit" class="textbox" placeholder="type only (banana, apple, orange)">
+        <input type="text" id="fruit3" class="textbox" placeholder="type only (banana, apple, orange)">
         <div class="amount-div" id="amount3">0</div>
         <button id="+3" onclick="up(this.id)">+</button>
         <button id="-3" onclick="down(this.id)">-</button>
     </div>
-    <button>generate receipt</button>
-    <div id="receipt">
-        
-    </div>
+    <button onclick="generateReceipt()">generate receipt</button>
+    <div id="receipt"></div>
     <script>
-        const arrayFruit = [{ name: "banana", price: "$0.10" }, { name: "apple", price: "$0.50" },
-        { name: "orange", price: "$0.20" }];
+        const arrayFruit = [{ name: "banana", price: 0.10 }, { name: "apple", price: 0.50 },
+        { name: "orange", price: 0.20 }];
+        
+
+        function generateReceipt() {
+            document.getElementById("receipt").innerHTML="";
+            //fruit
+            let fruit1 = document.getElementById("fruit1").value;
+            let fruit2 = document.getElementById("fruit2").value;
+            let fruit3 = document.getElementById("fruit3").value;
+            //quantity
+            let quantity1 = document.getElementById("amount1").textContent;
+            let quantity2 = document.getElementById("amount2").textContent;
+            let quantity3 = document.getElementById("amount3").textContent;
+
+            
+            addToReceipt(fruit1, quantity1);
+            addToReceipt(fruit2, quantity2);
+            addToReceipt(fruit3, quantity3);
+        }
+        function addToReceipt(fruit, quantity) {
+            arrayFruit.forEach(function (element) {
+                if (element.name == fruit) {
+                    let receipt_div = document.getElementById("receipt");
+                    let receipt_lastBuy = receipt_div.textContent;
+                    let prph = document.createElement('p');
+                    prph.innerText =fruit + "  " + Math.round((Number(quantity)*element.price)*10)/10; 
+                    receipt_div.appendChild(prph);
+                    //HOW TO SHOW THE VALUE WITH ONE DECIMAL
+                }
+            });
+
+        }
         function up(clicked_id) {
             if (clicked_id == "+1") {
                 let amount1 = document.getElementById("amount1").textContent;
@@ -86,7 +115,7 @@
                 }
             }
         }
-        
+
     </script>
 
 </body>
