@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>exercises 13</title>
+</head>
+
+<body>
+    <script>
+        const array = [1, 2, 3, 0, -3, -2, -1];
+        const maxNumber = max(array);
+        const minNumber = min(array);
+        const minGOENumber = minGreaterOrEqualTo0(array);
+        console.log("max: " + maxNumber);
+        console.log("min: " + minNumber);
+        console.log("minGOE: " + minGOENumber);
+        function max(array) {
+            let max = -Infinity;
+            array.forEach(function (element) {
+                if (max < element) {
+                    max = element;
+                }
+            });
+            return max;
+        }
+        function min() {
+            let min = Infinity;
+            array.forEach(function (element) {
+                if (min > element) {
+                    min = element;
+                }
+            });
+            return min;
+        }
+        function minGreaterOrEqualTo0() {
+            let minGOE = Infinity;
+            array.forEach(function (element) {
+                if (minGOE > element && element >= 0) {
+                    minGOE = element;
+                }
+            });
+            return minGOE;
+        }
+    </script>
+</body>
+
+</html>
