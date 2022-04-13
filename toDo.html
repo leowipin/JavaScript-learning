@@ -12,7 +12,7 @@
     <button onclick="addToDo()">add to do</button>
     <div id="todo-list"></div>
     <script>
-
+        //model
         let todos = [
             {
                 title: "go to the gym",
@@ -30,28 +30,15 @@
                 id: "id3"
             }];
 
-        loadingToDo();
-        function loadingToDo() {
-            document.getElementById("todo-list").innerHTML = '';
-
-            todos.forEach(function (todo) {
-                const element = document.createElement('div');
-                element.innerText = todo.title + " " + todo.dueDate;
-                const deleteButton = document.createElement("button");
-                deleteButton.innerText = "Delete"
-                deleteButton.style = "margin-left:12px";
-                deleteButton.id = todo.id;
-                deleteButton.onclick = deleteToDo
-                element.appendChild(deleteButton);
-                const todoList = document.getElementById("todo-list");
-                todoList.appendChild(element);
+        function createToDo(title, dueDate) {
+            const id = "" + new Date().getTime();
+            todos.push({
+                title: title,
+                dueDate: dueDate,
+                id: id
             });
         }
-
-        function deleteToDo(event) {
-
-            const deleteButton = event.target;
-            const idToDelete = deleteButton.id;
+        function removeToDo(idToDelete){
             todos = todos.filter(function (element) {
                 if (idToDelete === element.id) {
                     return false;
@@ -59,20 +46,45 @@
                     return true;
                 }
             });
-            loadingToDo();
+        }
+        loadingToDo();
+        //view
+        function loadingToDo() {
+            document.getElementById("todo-list").innerHTML = '';
+
+            todos.forEach(function (todo) {
+                const element = document.createElement('div');
+                element.innerText = todo.title + " " + todo.dueDate;
+                const checkbox = document.createElement("input");
+                checkbox.setAttribute("type","checkbox");
+                checkbox.dataset.todoId = todo.id;
+                const deleteButton = document.createElement("button");
+                deleteButton.innerText = "Delete"
+                deleteButton.style = "margin-left:12px";
+                deleteButton.id = todo.id;
+                deleteButton.onclick = deleteToDo
+                element.appendChild(checkbox);
+                element.appendChild(deleteButton);
+                const todoList = document.getElementById("todo-list");
+                todoList.appendChild(element);
+            });
         }
 
+        //controller
+        function deleteToDo(event) {
+
+            const deleteButton = event.target;
+            const idToDelete = deleteButton.id;
+            removeToDo(idToDelete);
+            loadingToDo();
+        }
+        
         function addToDo() {
             let textBox = document.getElementById('textBox');
             let title = textBox.value;
             let datePicker = document.getElementById("date-picker");
             let dueDate = datePicker.value;
-            const id = "" + new Date().getTime();
-            todos.push({
-                title: title,
-                dueDate: dueDate,
-                id: id
-            });
+            createToDo(title, dueDate);
             loadingToDo();
         }
 
