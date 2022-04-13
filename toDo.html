@@ -14,34 +14,65 @@
     <script>
 
         let todos = [
-            {title: "go to the gym",
-            dueDate: "2022-04-16" }, 
-            {title: "study JS",
-            dueDate: "2022-04-17"}, 
-            {title: "study python",
-            dueDate: "2022-04-15"}];
+            {
+                title: "go to the gym",
+                dueDate: "2022-04-16",
+                id: "id1"
+            },
+            {
+                title: "study JS",
+                dueDate: "2022-04-17",
+                id: "id2"
+            },
+            {
+                title: "study python",
+                dueDate: "2022-04-15",
+                id: "id3"
+            }];
 
         loadingToDo();
         function loadingToDo() {
-            document.getElementById("todo-list").innerHTML='';
+            document.getElementById("todo-list").innerHTML = '';
 
             todos.forEach(function (todo) {
-                let element = document.createElement('div');
+                const element = document.createElement('div');
                 element.innerText = todo.title + " " + todo.dueDate;
-                let todoList = document.getElementById("todo-list");
+                const deleteButton = document.createElement("button");
+                deleteButton.innerText = "Delete"
+                deleteButton.style = "margin-left:12px";
+                deleteButton.id = todo.id;
+                deleteButton.onclick = deleteToDo
+                element.appendChild(deleteButton);
+                const todoList = document.getElementById("todo-list");
                 todoList.appendChild(element);
             });
         }
 
+        function deleteToDo(event) {
+
+            const deleteButton = event.target;
+            const idToDelete = deleteButton.id;
+            todos = todos.filter(function (element) {
+                if (idToDelete === element.id) {
+                    return false;
+                } else {
+                    return true;    
+                }
+            });
+            loadingToDo();
+        }
 
         function addToDo() {
             let textBox = document.getElementById('textBox');
             let title = textBox.value;
             let datePicker = document.getElementById("date-picker");
             let dueDate = datePicker.value;
-
-            todos.push({title: title,
-                        dueDate: dueDate});
+            const id = new Date().getTime();
+            todos.push({
+                title: title,
+                dueDate: dueDate,
+                id: id
+            });
             loadingToDo();
         }
 
