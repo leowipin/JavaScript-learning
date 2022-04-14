@@ -46,14 +46,17 @@
 
         function createToDo(title, dueDate) {
             const id = "" + new Date().getTime();
-            todos.push({
+            const todo = {
                 title: title,
                 dueDate: dueDate,
                 id: id,
-                isDone: false,
+                isDone: undefined,
                 isEditing: undefined
-            });
+            };
+            todos.push(todo);
             saveToDo();
+            createToDoToDOM(todo);
+
         }
         function removeToDo(idToDelete) {
             todos = todos.filter(function (element) {
@@ -74,9 +77,9 @@
             saveToDo();
         }
         function setEditProperty(idEditButton) {
-            todos.forEach(function(element){
-                if(element.id==idEditButton){
-                    renderEditableToDo();
+            todos.forEach(function (element) {
+                if (element.id == idEditButton) {
+                    element.isEditing = true;
                 }
             });
         }
@@ -89,51 +92,75 @@
             document.getElementById("todo-list").innerHTML = '';
 
             todos.forEach(function (todo) {
-
-                const element = document.createElement('div');
-
-                element.innerText = todo.title + " " + todo.dueDate;
-
-                const checkbox = document.createElement("input");
-                checkbox.setAttribute("type", "checkbox");
-                checkbox.dataset.todoId = todo.id;
-                checkbox.onclick = checkToDo;
-                if (todo.isDone) {
-                    checkbox.checked = true;
-                }
-
-                const editButton = document.createElement("button");
-                editButton.innerText = "Edit";
-                editButton.id = todo.id;
-                editButton.style = "margin-left:12px";
-                editButton.onclick = editToDo;
-
-                const deleteButton = document.createElement("button");
-                deleteButton.innerText = "Delete"
-                deleteButton.style = "margin-left:12px";
-                deleteButton.id = todo.id;
-                deleteButton.onclick = deleteToDo;
-
-                element.appendChild(checkbox);
-                element.appendChild(editButton);
-                element.appendChild(deleteButton);
-
-                const todoList = document.getElementById("todo-list");
-                todoList.appendChild(element);
+                createToDoToDOM(todo);
             });
         }
 
-        function renderEditableToDo(){
-            // Here change the elements for edit from the specific toDo
+        function removeToDoFromDOM(parent) {
+            parent.remove();
+        }
+
+        function createToDoToDOM(todo) {
+            const element = document.createElement('div');
+            element.innerText = todo.title + " " + todo.dueDate;
+            element.id = todo.id;
+
+            const checkbox = document.createElement("input");
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.dataset.todoId = todo.id;
+            checkbox.onclick = checkToDo;
+            if (todo.isDone) {
+                checkbox.checked = true;
+            }
+            const editButton = document.createElement("button");
+            editButton.innerText = "Edit";
+            editButton.id = todo.id;
+            editButton.style = "margin-left:12px";
+            editButton.onclick = editToDo;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete"
+            deleteButton.style = "margin-left:12px";
+            deleteButton.id = todo.id;
+            deleteButton.onclick = deleteToDo;
+
+            element.appendChild(checkbox);
+            element.appendChild(editButton);
+            element.appendChild(deleteButton);
+
+            const todoList = document.getElementById("todo-list");
+            todoList.appendChild(element);
+        }
+
+        function renderEditableToDo(parent) {
+            
+            parent.innerHTML = "";
+            const textbox = document.createElement("input");
+            textbox.setAttribute("type", "textbox");
+            textbox.id = parent.id;
+            parent.appendChild(textbox);
+
+            const datePicker = document.createElement("input");
+            datePicker.setAttribute("type", "date");
+            datePicker.id = parent.id;
+            datePicker.style = "margin-left: 5px"
+            parent.appendChild(datePicker);
+
+            const updateBtn = document.createElement("button");
+            updateBtn.id = parent.id
+            updateBtn.innerText = "update";
+            updateBtn.style = "margin-left: 5px"
+            parent.appendChild(updateBtn);
+
         }
 
         //controller
         function deleteToDo(event) {
-
             const deleteButton = event.target;
             const idToDelete = deleteButton.id;
             removeToDo(idToDelete);
-            loadingToDo();
+            const parent = deleteButton.parentNode;
+            removeToDoFromDOM(parent);
         }
 
         function addToDo() {
@@ -142,7 +169,6 @@
             let datePicker = document.getElementById("date-picker");
             let dueDate = datePicker.value;
             createToDo(title, dueDate);
-            loadingToDo();
         }
 
         function checkToDo(event) {
@@ -155,6 +181,9 @@
             const editButton = event.target;
             const idEditButton = editButton.id;
             setEditProperty(idEditButton);
+            const parent = editButton.parentNode;
+            console.log(parent);
+            renderEditableToDo(parent);
         }
 
     </script>
