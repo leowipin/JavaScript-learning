@@ -17,17 +17,20 @@
             {
                 title: "go to the gym",
                 dueDate: "2022-04-16",
-                id: "id1"
+                id: "id1",
+                isDone: true
             },
             {
                 title: "study JS",
                 dueDate: "2022-04-17",
-                id: "id2"
+                id: "id2",
+                isDone: false
             },
             {
                 title: "study python",
                 dueDate: "2022-04-15",
-                id: "id3"
+                id: "id3",
+                isDone: false
             }];
 
         function createToDo(title, dueDate) {
@@ -35,10 +38,11 @@
             todos.push({
                 title: title,
                 dueDate: dueDate,
-                id: id
+                id: id,
+                isDone: false
             });
         }
-        function removeToDo(idToDelete){
+        function removeToDo(idToDelete) {
             todos = todos.filter(function (element) {
                 if (idToDelete === element.id) {
                     return false;
@@ -48,6 +52,7 @@
             });
         }
         loadingToDo();
+        printToDo();
         //view
         function loadingToDo() {
             document.getElementById("todo-list").innerHTML = '';
@@ -56,8 +61,12 @@
                 const element = document.createElement('div');
                 element.innerText = todo.title + " " + todo.dueDate;
                 const checkbox = document.createElement("input");
-                checkbox.setAttribute("type","checkbox");
+                checkbox.setAttribute("type", "checkbox");
                 checkbox.dataset.todoId = todo.id;
+                checkbox.onclick = checkToDo;
+                if(todo.isDone){
+                    checkbox.checked = true;
+                }
                 const deleteButton = document.createElement("button");
                 deleteButton.innerText = "Delete"
                 deleteButton.style = "margin-left:12px";
@@ -78,7 +87,7 @@
             removeToDo(idToDelete);
             loadingToDo();
         }
-        
+
         function addToDo() {
             let textBox = document.getElementById('textBox');
             let title = textBox.value;
@@ -86,6 +95,24 @@
             let dueDate = datePicker.value;
             createToDo(title, dueDate);
             loadingToDo();
+        }
+
+        function checkToDo(event) {
+            const checkbox = event.target;
+            const idCheckbox = checkbox.dataset.todoId;
+            todos.forEach(function (element) {
+                if (idCheckbox === element.id) {
+                    element.isDone = !element.isDone;
+                }
+            });
+            printToDo();
+
+        }
+
+        function printToDo() {
+            todos.forEach(function (element) {
+                console.log(element.title + ": " + element.isDone);
+            });
         }
 
     </script>
