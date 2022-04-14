@@ -23,24 +23,26 @@
                     title: "go to the gym",
                     dueDate: "2022-04-16",
                     id: "id1",
-                    isDone: true
+                    isDone: true,
+                    isEditing: undefined
                 },
                 {
                     title: "study JS",
                     dueDate: "2022-04-17",
                     id: "id2",
-                    isDone: false
+                    isDone: false,
+                    isEditing: undefined
                 },
                 {
                     title: "study python",
                     dueDate: "2022-04-15",
                     id: "id3",
-                    isDone: false
+                    isDone: false,
+                    isEditing: undefined
                 }];
         }
 
         loadingToDo();
-        printToDo();
 
         function createToDo(title, dueDate) {
             const id = "" + new Date().getTime();
@@ -48,7 +50,8 @@
                 title: title,
                 dueDate: dueDate,
                 id: id,
-                isDone: false
+                isDone: false,
+                isEditing: undefined
             });
             saveToDo();
         }
@@ -70,6 +73,13 @@
             });
             saveToDo();
         }
+        function setEditProperty(idEditButton) {
+            todos.forEach(function(element){
+                if(element.id==idEditButton){
+                    renderEditableToDo();
+                }
+            });
+        }
         function saveToDo() {
             localStorage.setItem("todo", JSON.stringify(todos));
         }
@@ -79,8 +89,11 @@
             document.getElementById("todo-list").innerHTML = '';
 
             todos.forEach(function (todo) {
+
                 const element = document.createElement('div');
+
                 element.innerText = todo.title + " " + todo.dueDate;
+
                 const checkbox = document.createElement("input");
                 checkbox.setAttribute("type", "checkbox");
                 checkbox.dataset.todoId = todo.id;
@@ -88,16 +101,30 @@
                 if (todo.isDone) {
                     checkbox.checked = true;
                 }
+
+                const editButton = document.createElement("button");
+                editButton.innerText = "Edit";
+                editButton.id = todo.id;
+                editButton.style = "margin-left:12px";
+                editButton.onclick = editToDo;
+
                 const deleteButton = document.createElement("button");
                 deleteButton.innerText = "Delete"
                 deleteButton.style = "margin-left:12px";
                 deleteButton.id = todo.id;
-                deleteButton.onclick = deleteToDo
+                deleteButton.onclick = deleteToDo;
+
                 element.appendChild(checkbox);
+                element.appendChild(editButton);
                 element.appendChild(deleteButton);
+
                 const todoList = document.getElementById("todo-list");
                 todoList.appendChild(element);
             });
+        }
+
+        function renderEditableToDo(){
+            // Here change the elements for edit from the specific toDo
         }
 
         //controller
@@ -122,14 +149,12 @@
             const checkbox = event.target;
             const idCheckbox = checkbox.dataset.todoId;
             setIsDone(idCheckbox);
-            printToDo();
-
         }
 
-        function printToDo() {
-            todos.forEach(function (element) {
-                console.log(element.title + ": " + element.isDone);
-            });
+        function editToDo(event) {
+            const editButton = event.target;
+            const idEditButton = editButton.id;
+            setEditProperty(idEditButton);
         }
 
     </script>
