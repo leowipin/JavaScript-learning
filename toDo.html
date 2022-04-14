@@ -13,25 +13,34 @@
     <div id="todo-list"></div>
     <script>
         //model
-        let todos = [
-            {
-                title: "go to the gym",
-                dueDate: "2022-04-16",
-                id: "id1",
-                isDone: true
-            },
-            {
-                title: "study JS",
-                dueDate: "2022-04-17",
-                id: "id2",
-                isDone: false
-            },
-            {
-                title: "study python",
-                dueDate: "2022-04-15",
-                id: "id3",
-                isDone: false
-            }];
+        let todos;
+        savedToDos = JSON.parse(localStorage.getItem("todo"));
+        if (Array.isArray(savedToDos)) {
+            todos = savedToDos;
+        } else {
+            todos = [
+                {
+                    title: "go to the gym",
+                    dueDate: "2022-04-16",
+                    id: "id1",
+                    isDone: true
+                },
+                {
+                    title: "study JS",
+                    dueDate: "2022-04-17",
+                    id: "id2",
+                    isDone: false
+                },
+                {
+                    title: "study python",
+                    dueDate: "2022-04-15",
+                    id: "id3",
+                    isDone: false
+                }];
+        }
+
+        loadingToDo();
+        printToDo();
 
         function createToDo(title, dueDate) {
             const id = "" + new Date().getTime();
@@ -41,6 +50,7 @@
                 id: id,
                 isDone: false
             });
+            saveToDo();
         }
         function removeToDo(idToDelete) {
             todos = todos.filter(function (element) {
@@ -50,9 +60,20 @@
                     return true;
                 }
             });
+            saveToDo();
         }
-        loadingToDo();
-        printToDo();
+        function setIsDone(idCheckbox) {
+            todos.forEach(function (element) {
+                if (idCheckbox === element.id) {
+                    element.isDone = !element.isDone;
+                }
+            });
+            saveToDo();
+        }
+        function saveToDo() {
+            localStorage.setItem("todo", JSON.stringify(todos));
+        }
+
         //view
         function loadingToDo() {
             document.getElementById("todo-list").innerHTML = '';
@@ -64,7 +85,7 @@
                 checkbox.setAttribute("type", "checkbox");
                 checkbox.dataset.todoId = todo.id;
                 checkbox.onclick = checkToDo;
-                if(todo.isDone){
+                if (todo.isDone) {
                     checkbox.checked = true;
                 }
                 const deleteButton = document.createElement("button");
@@ -100,11 +121,7 @@
         function checkToDo(event) {
             const checkbox = event.target;
             const idCheckbox = checkbox.dataset.todoId;
-            todos.forEach(function (element) {
-                if (idCheckbox === element.id) {
-                    element.isDone = !element.isDone;
-                }
-            });
+            setIsDone(idCheckbox);
             printToDo();
 
         }
