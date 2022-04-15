@@ -55,7 +55,7 @@
             };
             todos.push(todo);
             saveToDo();
-            createToDoToDOM(todo);
+            addingToDo(todo);
 
         }
         function removeToDo(idToDelete) {
@@ -83,6 +83,18 @@
                 }
             });
         }
+        function setToDo(newToDo, newDate, btnId){
+            todos.forEach(function(element){
+                if(element.id === btnId){
+                    element.title = newToDo;
+                    element.dueDate = newDate;
+                    setEditedToDo(element);//this should be in the controller
+                }
+            });
+            saveToDo();
+            
+        }
+        
         function saveToDo() {
             localStorage.setItem("todo", JSON.stringify(todos));
         }
@@ -92,7 +104,7 @@
             document.getElementById("todo-list").innerHTML = '';
 
             todos.forEach(function (todo) {
-                createToDoToDOM(todo);
+                addingToDo(todo);
             });
         }
 
@@ -128,8 +140,12 @@
             element.appendChild(editButton);
             element.appendChild(deleteButton);
 
+            return element;
+            
+        }
+        function addingToDo(todo){
             const todoList = document.getElementById("todo-list");
-            todoList.appendChild(element);
+            todoList.appendChild(createToDoToDOM(todo));
         }
 
         function renderEditableToDo(parent) {
@@ -150,8 +166,16 @@
             updateBtn.id = parent.id
             updateBtn.innerText = "update";
             updateBtn.style = "margin-left: 5px"
+            updateBtn.onclick = updateToDo;
             parent.appendChild(updateBtn);
 
+        }
+
+        function setEditedToDo(todo){
+            const container = document.getElementById(todo.id);
+            container.innerHTML = "";
+            container.appendChild(createToDoToDOM(todo));
+            
         }
 
         //controller
@@ -186,6 +210,18 @@
             renderEditableToDo(parent);
         }
 
+        function updateToDo(event){
+            const updatebtn = event.target;
+            const btnId = updatebtn.id;
+            const container = document.getElementById(btnId);
+            const textbox = container.children[0];
+            const newToDo = textbox.value;
+            const date = container.children[1];
+            const newDate = date.value;
+            setToDo(newToDo, newDate, btnId);
+            
+        }
+        // Create a function that create a todo and use in updateToDo and thre create toDo
     </script>
 </body>
 
